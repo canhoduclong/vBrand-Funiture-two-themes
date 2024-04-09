@@ -208,19 +208,19 @@
 						<div class="col-xl-3-5col col-lg-7 banner-content-wrap">
 							<div class="banner-content text-center">
 								<img src="<?=get_template_directory_uri()?>/assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
-								<h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
-								<p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite products.</p>
+								<h2 class="banner-title">Giảm ngay <span>25<light>%</light></span> / Sản phẩm</h2>
+								<p>Cho khách hàng đặt mua bất kỳ sản phẩm nào tới ngày 30/04/2024.</p>
 								<form action="#">
 									<div class="input-group input-group-round">
 										<input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
 										<div class="input-group-append">
-											<button class="btn" type="submit"><span>go</span></button>
+											<button class="btn" type="submit"><span>Đăng ký</span></button>
 										</div><!-- .End .input-group-append -->
 									</div><!-- .End .input-group -->
 								</form>
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-									<label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
+									<label class="custom-control-label" for="register-policy-2">Không show lại thông tin</label>
 								</div><!-- End .custom-checkbox -->
 							</div>
 						</div>
