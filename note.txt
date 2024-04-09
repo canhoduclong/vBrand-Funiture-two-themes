@@ -1,0 +1,28 @@
+Install Woo vBrand
+
+1. Require & Install Plugins:
+    - Woocommerce
+    - Polylang ( for many language )
+    - Contact form 7
+    - Simple SMTP Email. ( require premium Simple SMTP Email with thirparty email hosting provider: zoho, mailchimp,.. )
+    
+2. Create page
+    About us : Template Name: Giới thiệu Page
+    Product : Template Name: Sẩn phẩm Page
+    Homepage : Template Name: Trang chủ Page
+    Service : Template Name: Dịch vụ Page
+    Contact : Template Name: Liên hệ Page
+    Support : Template Name: Hỗ trợ Page
+
+3. Create Product
+    create minimun 3 Product inside
+
+4. Create menu 
+    - Main meu Check header menu
+
+More extra
+    Email account and hosting provider
+    - vBrand Email 
+    - Mailchimp
+    - Amazone
+ 
