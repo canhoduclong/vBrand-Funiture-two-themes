@@ -112,12 +112,7 @@
                             
                             <div class="header-search">
                                 <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                                <form action="<?php echo home_url('/');?>" method="get">
-                                    <div class="header-search-wrapper">
-                                        <label for="q" class="sr-only">Search</label>
-                                        <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
-                                    </div><!-- End .header-search-wrapper -->
-                                </form>
+                                <?php echo do_shortcode('[custom_product_search]'); ?>
                             </div><!-- End .header-search -->
                             
                             <a href="<?php echo home_url('/');?>/wishlist" class="wishlist-link">

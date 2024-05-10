@@ -42,9 +42,10 @@
     </head>
     <body>
         <div class="page-wrapper">
-            <header class="header header-7">
+            <header class="header">
                 <div class="header-middle sticky-header">
                     <div class="container">
+                        
                         <div class="header-left">
                             <button class="mobile-menu-toggler">
                                 <span class="sr-only">Toggle mobile menu</span>
@@ -58,12 +59,6 @@
                                     Shop Funiture
                                 <?php } ?> 
                             </a>
-                            
-                        </div>
-                        <!-- End .header-left -->
-
-                        <div class="header-right">
-
                             <nav class="main-nav">
                                 <ul class="menu sf-arrows">
 
@@ -108,16 +103,17 @@
                                         }
                                     } ?>
                                 </ul>
-                            </nav>
+                            </nav>  
                             
+                        </div>
+                        <!-- End .header-left -->
+
+                        <div class="header-right">
+
+                          
                             <div class="header-search">
                                 <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                                <form action="<?php echo home_url('/');?>" method="get">
-                                    <div class="header-search-wrapper">
-                                        <label for="q" class="sr-only">Search</label>
-                                        <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
-                                    </div><!-- End .header-search-wrapper -->
-                                </form>
+                                <?php echo do_shortcode('[custom_product_search]'); ?>
                             </div><!-- End .header-search -->
                             
                             <a href="<?php echo home_url('/');?>/wishlist" class="wishlist-link">
@@ -129,13 +125,15 @@
                                 <a href="<?php echo home_url('/');?>/card" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">2</span>
-                                    <span class="cart-txt">$ 164,00</span>
+                                     
                                 </a>
 
                                 <?php do_shortcode('[short_menu_cart]'); ?> 
 
                                 <!-- End .dropdown-menu -->
                             </div><!-- End .cart-dropdown -->
+
+                            
                         </div><!-- End .header-right -->
                     </div><!-- End .container -->
                 </div><!-- End .header-middle -->

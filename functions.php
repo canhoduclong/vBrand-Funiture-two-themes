@@ -23,6 +23,11 @@ function vbrand_widget_filter() {
 }
 add_action('widgets_init', 'vbrand_widget_filter');
 
+/**
+ * Use my custum plugin defind
+ */
+@include_once( ABSPATH.'/wp-content/plugins/shopmaker/shopmaker.php' ); 
+
 
 /*
 $demo_data_imported = get_option('demo_data_imported');
@@ -210,97 +215,7 @@ add_action('widgets_init', 'theme_register_sidebars');
 
 /**
  * Breadcrumb
- */
-function theme_breadcrumbs() {
-    // Define the home icon and text
-    $home_icon = '<i class="fa fa-home"></i>';
-    $home_text = 'Home';
-
-    // Start the breadcrumb output
-    echo '<div class="breadcrumbs">';
-    echo '<a href="' . home_url() . '">' . $home_icon . ' ' . $home_text . '</a>';
-
-    // Check if it's a single post (single.php) or a page
-    if (is_single() || is_page()) {
-        $post_type = get_post_type();
-        $post_type_object = get_post_type_object($post_type);
-
-        // Display category and parent pages for posts
-        if ($post_type === 'post') {
-            $categories = get_the_category();
-            if (!empty($categories)) {
-                $category = $categories[0];
-                echo '<span class="sep"> &raquo; </span>';
-                echo '<a href="' . get_category_link($category->term_id) . '">' . $category->name . '</a>';
-            }
-        }
-
-        // Display parent pages for pages
-        elseif ($post_type === 'page') {
-            $ancestors = get_post_ancestors(get_the_ID());
-            if (!empty($ancestors)) {
-                $ancestors = array_reverse($ancestors);
-                foreach ($ancestors as $ancestor) {
-                    echo '<span class="sep"> &raquo; </span>';
-                    echo '<a href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a>';
-                }
-            }
-        }
-
-        // Display the current post or page title
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">' . get_the_title() . '</span>';
-    }
-
-    // Display the category for category archives
-    elseif (is_category()) {
-        $category = get_queried_object();
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">' . $category->name . '</span>';
-    }
-
-    // Display the tag for tag archives
-    elseif (is_tag()) {
-        $tag = get_queried_object();
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">' . $tag->name . '</span>';
-    }
-
-    // Display the search term for search results
-    elseif (is_search()) {
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">Search results for "' . get_search_query() . '"</span>';
-    }
-
-    // Display the date for date archives
-    elseif (is_date()) {
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">' . get_the_date() . '</span>';
-    }
-
-    // Display the author for author archives
-    elseif (is_author()) {
-        $author = get_queried_object();
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">Author: ' . $author->display_name . '</span>';
-    }
-
-    // Display the custom post type for custom post type archives
-    elseif (is_post_type_archive()) {
-        $post_type = get_queried_object();
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">' . $post_type->labels->name . '</span>';
-    }
-
-    // Display the 404 error page
-    elseif (is_404()) {
-        echo '<span class="sep"> &raquo; </span>';
-        echo '<span class="current">404 Not Found</span>';
-    }
-
-    // End the breadcrumb output
-    echo '</div>';
-}
+ */ 
 
 // Add the breadcrumbs to your theme by calling this function where you want them to appear 
 
@@ -357,6 +272,8 @@ function display_product_categories_checkbox() {
     $product_categories = get_terms(array(
         'taxonomy'   => 'product_cat',
         'hide_empty' => false,
+        'orderby'    => 'count',
+        'order'    => 'DESC',
     ));
 
     // Start the output buffer
@@ -368,19 +285,18 @@ function display_product_categories_checkbox() {
         $in_categories = explode( ',',  $_GET['productcategories'] );
     }
     // Display a checkbox for each category
-    echo '<ul class="categories">';
+    echo ' <div class="filter-items filter-items-count">';
     foreach ($product_categories as $category) {
-        echo "<li>";
-        echo '<input type="checkbox" name="product_categorie[]" value="' . esc_attr($category->slug) . '" id="' . esc_attr($category->slug) . '"';
-        // Check if the category is selected
-        if ( in_array($category->slug, $in_categories) ) {
-            echo ' checked';
-        }   
-        echo '>';
-        echo '<label class="ml-2" for="' . esc_attr($category->slug) . '">' . esc_html($category->name) . '</label>';
-        echo "</li>";
+        echo '<div class="filter-item">';
+        echo    '<div class="custom-control custom-checkbox">'; 
+        echo        '<input type="checkbox" class="custom-control-input"  name="product_categorie[]" value="' . esc_attr($category->slug) . '" id="' . esc_attr($category->slug) . '" >';
+
+        echo        '<label class="custom-control-label" for="' . esc_attr($category->slug) . '">' . esc_html($category->name) . '</label>';
+        echo    '</div>';
+        echo    '<span class="item-count">'.$category->count.'</span>';
+        echo    '</div>';
     }
-    echo "</ul>";
+    echo "</div>";
 
     // Return the buffered output
     return ob_get_clean();
@@ -478,7 +394,175 @@ function short_menu_cart_function(){
 }
 add_shortcode('short_menu_cart', 'short_menu_cart_function');
 
+/**
+ * Paging for products
+ */
+add_action( 'after_setup_theme', function() {
+    add_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 9 );
+    add_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+});
 
 
+
+
+/**
+ *  woocommerce
+ */ 
+
+  
+ 
+function woocommerce_output_content_wrapper() { 
+    //if(is_shop() || is_single()){ 
+        echo ' <div class="col-lg-9">';
+    //} 
+} 
+
+function before_shop_loop (){
+    //if( is_shop() || is_product_category()){
+        echo '<div class="products mb-3">';
+    //}
+}
+
+function before_shop_loop_item (){
+    //if( is_shop() || is_product_category()){
+        echo '<div class="col-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="product product-7 text-center">
+                    ';
+    //}
+}
+function add_before_figure(){
+    echo '<figure class="product-media">';
+}
+function add_after_figure(){
+    echo '</figure>';
+}
+
+function after_shop_loop_item (){
+    //if( is_shop() || is_product_category()){
+        echo '</div>
+            </div>';
+    //}
+}
+function after_shop_loop (){
+        echo '</div> ';
+} 
+function _output_content_wrapper_end (){
+    //if( is_shop() || is_product_category()){
+        echo '</div>';
+    //}
+}
+ 
+ 
+function _item_title(){
+    echo "<h1>hello</h1>";
+}
+function before_shop_toolbox(){
+    echo '<div class="toolbox">';
+}
+function after_shop_toolbox(){
+    echo '</div>';
+}
+function woocommerce_show_product_loop_sale_flash(){
+    echo '<span class="product-label label-new">New</span>';
+}
+function product_action_vertical(){
+    echo '<div class="product-action-vertical">
+            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>Thêm vào Yêu thích</span></a>
+            <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="Quick view"><span>Xem nhanh</span></a>
+            <a href="#" class="btn-product-icon btn-compare btn-expandable" title="So sánh"><span>So sánh</span></a>
+        </div>';
+}
+function product_before_body_item(){
+    echo '<div class="product-body">';
+}
+function product_after_body_item(){
+    echo '</div>';
+}
+function product_item_cat(){
+    echo '<div class="product-cat">
+            <a href="#">Mỹ phẩm</a>,
+            <a href="#">Làm đẹp</a>
+        </div>';
+}
+function product_item_rate(){
+    echo '<div class="ratings-container">
+            <div class="ratings">
+                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+            </div><!-- End .ratings -->
+            <span class="ratings-text">( 6 Reviews )</span>
+        </div>';
+}
+
+
+remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+add_action( 'woocommerce_paging', 'woocommerce_breadcrumb', 10 );
+//remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
+
+add_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );  
+//add_action( 'woocommerce_before_main_content', '_item_title' );
+
+remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+    add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_loop');
+    add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_toolbox', 10 );    
+    add_action ( 'woocommerce_before_shop_loop' ,  'after_shop_toolbox', 50 );
+
+    //-- shop loop itmes
+    remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ); 
+    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 10 );
+
+    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+    
+        add_action ( 'woocommerce_before_shop_loop_item' ,  'before_shop_loop_item');
+        add_action ( 'woocommerce_before_shop_loop_item' ,  'add_before_figure', 40);
+
+            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_show_product_loop_sale_flash', 10);
+            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_open');
+            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_thumbnail');
+            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_close');
+            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'product_action_vertical');
+            
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'add_after_figure', 20); 
+
+        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_before_body_item', 0);
+        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_item_cat', 1);
+        
+        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_item_rate', 20);
+        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_after_body_item', 30);
+
+        add_action ( 'woocommerce_after_shop_loop_item' ,  'after_shop_loop_item');
+
+    add_action ( 'woocommerce_after_shop_loop' ,  'after_shop_loop');
+
+add_action ( 'woocommerce_output_content_wrapper_end' ,  '_output_content_wrapper_end', 50);
+
+
+
+add_action( 'woocommerce_after_shop_loop_item', 'remove_add_to_cart_buttons', 1 );
+function remove_add_to_cart_buttons() { 
+    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' ); 
+}
+
+
+add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_add_to_cart', 10 );
+
+//add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+
+//remove_action
+//add_action('woocommerce_sidebar','_get_sidebar');
+ 
+/**
+ * for product loop
+ */
+
+ function woocommerce_template_loop_product_title() {
+    global $product;
+    $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
+	echo '<h3 class="' . esc_attr( apply_filters( 'woocommerce_product_loop_title_classes', 'product-title' ) ) . '">  <a href="' . esc_url( $link ) . '">' . get_the_title() . '</a></h3>';
+}
+
+
+
+//------------- 
 
 ?>
