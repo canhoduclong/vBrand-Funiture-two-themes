@@ -35,8 +35,7 @@
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/plugins/magnific-popup/magnific-popup.css">
         
         <!-- Main CSS File -->
-        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/style.css">
-        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/plugins/nouislider/nouislider.css">
+        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/style.css"> 
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/demos/demo-11.css">
         
     </head>

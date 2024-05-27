@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! empty( $breadcrumb ) ) {
      
-        echo    '<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-                <div class="container">
-                    <ol class="breadcrumb">';
+        echo    '<nav class="breadcrumb-nav mb-2">
+                    <div class="container">
+                        <ol class="breadcrumb">';
         foreach ( $breadcrumb as $key => $crumb ) { 
-            echo $before;
+           // echo $before;
     
             if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
                 echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
@@ -41,32 +41,8 @@ if ( ! empty( $breadcrumb ) ) {
             }
         }
     
-        echo $wrap_after;
-        echo    '</ol>
-                </div> 
+       // echo $wrap_after;
+        echo            '</ol>
+                    </div> 
                 </nav>';
-    
-    
-
-
-	/*
-	foreach ( $breadcrumb as $key => $crumb ) {
-
-		echo $before;
-
-		if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
-		} else {
-			echo esc_html( $crumb[0] );
-		}
- 
-		echo $after;
-
-		if ( sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo $delimiter;
-		}
-	}
-
-	echo $wrap_after;
-	*/
 }

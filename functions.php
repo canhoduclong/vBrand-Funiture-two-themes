@@ -241,7 +241,7 @@ add_action('widgets_init', 'theme_register_sidebar');
 
 // Hàm thay đổi câu lệnh query để lọc sản phẩm theo danh mục
 function custom_shop_page_query($query) {
-    if (is_shop() && $query->is_main_query()) {
+    //if (is_shop() && $query->is_main_query()) {
         // Kiểm tra xem có thể lọc theo danh mục hay không
         if (isset($_GET['productcategories']) && !empty($_GET['productcategories'])) {
             $category_slugs = explode(',', $_GET['productcategories']);
@@ -258,7 +258,7 @@ function custom_shop_page_query($query) {
 
             $query->set('tax_query', $tax_query);
         }
-    }
+   // }
 }
 
 // Hook để thực hiện thay đổi câu lệnh query trước khi thực hiện truy vấn
@@ -410,25 +410,334 @@ add_action( 'after_setup_theme', function() {
  */ 
 
   
- 
-function woocommerce_output_content_wrapper() { 
-    //if(is_shop() || is_single()){ 
-        echo ' <div class="col-lg-9">';
-    //} 
-} 
+ add_action( 'after_setup_theme', function() {
+    add_action( 'pre_get_posts', 'custom_woocommerce_product_query' );
+    add_action( 'woocommerce_sidebar', 'show_attribute_sidebar', 10 );
+});
 
-function before_shop_loop (){
-    //if( is_shop() || is_product_category()){
-        echo '<div class="products mb-3">';
-    //}
+
+function custom_woocommerce_product_query( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && ( is_shop() || is_product_category() || is_product_tag() ) ) {
+        if ( isset( $_GET['filter_pa_size'] ) && ! empty( $_GET['filter_pa_size'] ) ) {
+            $terms = explode( ',', sanitize_text_field( $_GET['filter_pa_size'] ) );
+            $tax_query = (array)$query->get( 'tax_query' );
+            $tax_query[] = array(
+                'taxonomy' => 'pa_size', // Change 'pa_size' to your attribute
+                'field'    => 'slug',
+                'terms'    => $terms,
+                'operator' => 'IN', // Change operator as per requirement
+            );
+            // echo "<pre>"; print_r($tax_query); echo "<pre>";
+            $query->set( 'tax_query', $tax_query );
+        }
+           
+    }
 }
 
-function before_shop_loop_item (){
-    //if( is_shop() || is_product_category()){
+
+
+
+//------- 
+
+function initial(){
+    if(is_product() || is_shop() || is_product_category() || is_product_tag()){
+        remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+        add_action( 'woocommerce_custom_breadcrumb', 'woocommerce_breadcrumb', 10 );
+              
+    }
+    if(is_shop() || is_product_category() || is_product_tag()) { 
+        add_action( 'wp_enqueue_scripts', 'custom_enqueue_scripts' );
+
+        add_action( 'woocommerce_custom_content_wrapper', 'woocommerce_add_row_tag' );
+        add_action( 'woocommerce_custom_content_wrapper', 'woocommerce_before_product_tag' );
+        remove_action( 'woocommerce_before_shop_loop', 'woocommerce_output_all_notices', 20 );
+
+        remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
+        add_action( 'woocommerce_custom_content_wrapper', 'woocommerce_output_content_wrapper', 10 );
+
+        
+
+        add_action( 'woocommerce_custom_end_content_wrapper', 'woocommerce_add_end_row_tag' );
+        //add_action( 'woocommerce_custom_end_content_wrapper', 'woocommerce_add_end_product_tag' ); 
+        
+
+        add_action( 'woocommerce_sidebar', 'woocommerce_before_sidebar', 0 );
+        add_action( 'woocommerce_sidebar', 'woocommerce_after_sidebar', 20 );
+
+        add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_loop');
+        add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_toolbox', 10 );    
+        add_action ( 'woocommerce_before_shop_loop' ,  'after_shop_toolbox', 50 );
+
+        //-- shop loop itmes
+        remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ); 
+        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 10 );
+
+        remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+        remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        
+        add_action ( 'woocommerce_before_shop_loop_item' ,  'before_shop_loop_item');
+        add_action ( 'woocommerce_before_shop_loop_item' ,  'add_before_figure', 40);
+
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_show_product_loop_sale_flash', 10);
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_open');
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_thumbnail');
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_close');
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'product_action_vertical');
+            
+        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'add_after_figure', 20); 
+
+        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_before_body_item', 0);
+        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_item_cat', 1);
+        
+        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_item_rate', 20);
+        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_after_body_item', 30);
+
+        add_action ( 'woocommerce_after_shop_loop_item' ,  'after_shop_loop_item');
+        add_action ( 'woocommerce_after_shop_loop' ,  'after_shop_loop');
+        add_action ( 'woocommerce_output_content_wrapper_end' ,  '_output_content_wrapper_end', 50);
+
+        add_action( 'woocommerce_after_shop_loop_item', 'remove_add_to_cart_buttons', 1 );        
+        add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_add_to_cart', 10 ); 
+    }
+    if(is_product()){
+         
+        add_action( 'woocommerce_before_main_content', 'woocommerce_before_product_details_tag' );
+        //add_action( 'woocommerce_before_main_content', 'woocommerce_add_row_tag', 30 );
+    }
+}
+add_action( 'wp', 'initial');
+
+function vn_to_str ($str){
+    $unicode = array(
+        'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+        'd'=>'đ',     
+        'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',     
+        'i'=>'í|ì|ỉ|ĩ|ị',     
+        'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',     
+        'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',     
+        'y'=>'ý|ỳ|ỷ|ỹ|ỵ',     
+        'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',     
+        'D'=>'Đ',     
+        'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',     
+        'I'=>'Í|Ì|Ỉ|Ĩ|Ị',     
+        'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',     
+        'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',     
+        'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',     
+    );
+    foreach($unicode as $nonUnicode=>$uni){     
+        $str = preg_replace("/($uni)/i", $nonUnicode, $str);     
+    }
+    $str = str_replace(' ','_',$str);     
+    return $str;
+}
+
+function remove_add_to_cart_buttons() { 
+    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' ); 
+}
+
+//------------- feature for attribute
+function color_pattern($color ='', $selected = false){
+    
+    $taxonomy = 'pa_color'; 
+    $link = add_query_arg( 'filter_' . esc_attr( $taxonomy ), esc_attr( $color ), get_permalink( wc_get_page_id( 'shop' ) ) );
+
+    $result = [];
+    
+    $color = trim($color);
+    
+    $vang   = array("cam", "vàng", "vang"   );
+    $do     = array("Đỏ", "Đỏ bi", "đỏ", "do"  );
+    $green  = array("green", "Xanh lá", "xanh la", "xanh lá", 'Green');
+    $blue   = array("xanh", 'Xanh', "blue", "xanh da troi", "Xanh da trời", "Xanh Lam");
+    $den    = array("Đen", "DEN", "den", "black");
+    $hong   = array("hồng", "Hồng", "Pink", "pink");
+    $nau    = array("Nâu Đen", "Nâu", "nau", "nâu");
+
+    if( in_array($color, $vang ) ){ 
+        return '<a href="'.$link.'" data-color="vang" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $do ) ){
+        return '<a href="'.$link.'" data-color="do" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $green ) ){
+        return '<a href="'.$link.' data-color="green" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #669933;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $blue ) ){
+        return '<a href="javascript:;" data-color="blue" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $den ) ){
+        return '<a href="javascript:;" data-color="den" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #333333;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $hong ) ){
+        return '<a href="javascript:;" data-color="hong" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>';
+    }
+    if( in_array($color, $nau ) ){
+        return '<a href="javascript:;" data-color="nau" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #b87145;"><span class="sr-only">Color Name</span></a>';
+    } 
+
+    return '<a href="javascript:;" data-color="xam" class="clcolor '. ($selected ? ' selected' :'').'" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>';
+}
+
+function get_all_attributes(){  
+    if ( class_exists( 'WooCommerce' ) ) {   
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => -1, // Get all products
+            'post_status' => 'publish',
+        );
+        $products = get_posts( $args );
+        $all_attributes = [];
+        // Loop through each product
+        foreach ( $products as $product_post ) {
+            $_pf = new WC_Product_Factory();
+            $product = $_pf->get_product( $product_post->ID );
+            //$product = wc_get_product( $product_post->ID );
+            $product_id = $product->get_id();
+            $product_name = $product->get_name();
+            $product_attributes = $product->get_attributes();
+            if ( ! empty( $product_attributes ) ) {
+                foreach ( $product_attributes as $attribute ) {
+                    $attributes_name = wc_attribute_label( $attribute->get_name() );
+                    $attributes_options = $attribute->get_options();
+                    $all_attributes[$attributes_name][]= $attributes_options;
+                }
+            }
+        }
+        return $all_attributes;
+    }
+}
+function show_attribute_sidebar(  ){
+    
+    $sidebar = '';
+    $sizes = [];
+    $colors = [];
+    $attribute_array =  get_all_attributes();
+    foreach($attribute_array as $key => $attribute_options ){       
+        if($key =='Kích thước'  || $key == 'size' ){
+            foreach($attribute_options as $attribute_option ){
+                foreach($attribute_option as $option )
+                $sizes[] = $option;
+            }
+        }elseif($key =='color'  || $key == 'Màu sắc'){
+            foreach($attribute_options as $attribute_option ){
+                foreach($attribute_option as $option )
+                $colors[] = $option;
+            } 
+        }
+    }
+
+    //---- array unique
+
+    $attribute_sizes = array_unique($sizes);
+    $attribute_colors = array_unique($colors);
+    
+    $sidebar .= '<div class="widget widget-collapsible">
+                    <h3 class="widget-title">
+                        <a data-toggle="collapse" href="#widget-12" role="button" aria-expanded="true" aria-controls="widget-12">
+                        Kích thước
+                        </a>
+                    </h3>';
+    if($attribute_sizes){
+        $sidebar .= '<div class="collapse show" id="widget-12">
+                        <div class="widget-body">
+                            <div class="filter-items">';
+        $taxonomy_size = 'pa_size';
+        foreach($attribute_sizes as $key => $size){
+
+            $checked = isset( $_GET['filter_' . esc_attr( $taxonomy_size )] ) && in_array( $size,   explode(',',($_GET['filter_' . esc_attr( $taxonomy_size )] )  ) ) ? ' checked' : '';
+
+            $sidebar .= '<div class="filter-item">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input size-filter-checkbox"  data-term="' . $size  . '" id="size-'.$key.'"  ' . $checked . '>
+                                <label class="custom-control-label" for="size-'.$key.'">'.$size.'</label>
+                            </div>
+                        </div>';
+        }
+        $sidebar .= '</div></div></div>';
+    }
+    $sidebar .= '</div>';
+
+    //------ Color Filter
+    $sidebar .= '<div class="widget widget-collapsible">
+                    <h3 class="widget-title">
+                        <a data-toggle="collapse" href="#widget-22" role="button" aria-expanded="true" aria-controls="widget-22">
+                            Màu sắc
+                        </a>
+                    </h3>';
+    if($attribute_colors){
+        $sidebar .= '<div class="collapse show" id="widget-22">
+                        <div class="widget-body">
+                            <div class="filter-colors">';
+        $color_list = [];
+        $taxonomy_color = 'pa_color';
+        //print_r( explode(',',($_GET['filter_' . esc_attr( $taxonomy_color )] )  ) );
+        foreach($attribute_colors as $color){
+            $color = strtolower(vn_to_str($color));
+            //echo $color."<br />";
+            $checked = isset( $_GET['filter_' . esc_attr( $taxonomy_color )] ) && in_array( $color,   explode(',',($_GET['filter_' . esc_attr( $taxonomy_color )] )  ) ) ? true : false;
+            $color_list[] = color_pattern($color,  $checked);
+        }
+        $colorlist = array_unique($color_list );
+        $sidebar .= join('', $colorlist);
+        $sidebar .= '</div></div></div>';
+    }
+    $sidebar .= '</div>';
+    echo $sidebar;     
+}
+function woocommerce_template_loop_product_title() {
+    global $product;
+    $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
+    echo '<h3 class="' . esc_attr( apply_filters( 'woocommerce_product_loop_title_classes', 'product-title' ) ) . '">  <a href="' . esc_url( $link ) . '">' . get_the_title() . '</a></h3>';
+}
+function custom_enqueue_scripts() {
+    wp_enqueue_script( 'custom-size-filter', get_template_directory_uri() . '/assets/js/custom-size-filter.js', array('jquery'), null, true );
+}
+function get_current_page_slug() {
+    global $post;
+    if (isset($post)) { 
+        return $post->post_name;
+    }
+    return null;
+}
+function woocommerce_before_product_details_tag() { 
+    echo   '<div class="product-details-top mb-2">';
+}
+function woocommerce_before_product_tag() { 
+    echo   '<div class="col-lg-9">';
+}
+function woocommerce_after_product_tag() { 
+    echo   '</div>';
+}
+function woocommerce_add_end_row_tag() { 
+    echo   '</div>';
+} 
+function woocommerce_add_row_tag() { 
+    echo   '<div class="row">'; 
+}
+function woocommerce_before_sidebar() { 
+    echo   '<aside class="col-lg-3 order-lg-first"> <div class="sidebar sidebar-shop">'; 
+}
+function woocommerce_after_sidebar() { 
+    echo   '</div></aside>'; 
+}
+
+
+
+function before_shop_loop (){ 
+    echo '<div class="products mb-3">'; 
+}
+function before_shop_loop_item (){ 
+    
+    if ( is_shop() || is_product_category() || is_product_tag() ) { 
         echo '<div class="col-6 col-md-4 col-lg-4 col-xl-4">
-                <div class="product product-7 text-center">
-                    ';
-    //}
+                <div class="product product-7 text-center"> ';
+    }elseif(is_front_page()){
+        echo '<div class="col-4 col-md-3 col-lg-3 col-xl-3">
+                 <div class="product product-7 text-center"> ';
+    }else{
+
+    }
+     
 }
 function add_before_figure(){
     echo '<figure class="product-media">';
@@ -436,25 +745,17 @@ function add_before_figure(){
 function add_after_figure(){
     echo '</figure>';
 }
-
-function after_shop_loop_item (){
-    //if( is_shop() || is_product_category()){
-        echo '</div>
-            </div>';
-    //}
+function after_shop_loop_item (){ 
+    echo '</div>  </div>'; 
 }
 function after_shop_loop (){
-        echo '</div> ';
+    echo '</div> ';
 } 
-function _output_content_wrapper_end (){
-    //if( is_shop() || is_product_category()){
-        echo '</div>';
-    //}
+function _output_content_wrapper_end (){ 
+    echo '</div>'; 
 }
- 
- 
-function _item_title(){
-    echo "<h1>hello</h1>";
+function woocommerce_add_end_product_tag (){ 
+    echo '</div>'; 
 }
 function before_shop_toolbox(){
     echo '<div class="toolbox">';
@@ -485,84 +786,14 @@ function product_item_cat(){
         </div>';
 }
 function product_item_rate(){
-    echo '<div class="ratings-container">
-            <div class="ratings">
-                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-            </div><!-- End .ratings -->
-            <span class="ratings-text">( 6 Reviews )</span>
-        </div>';
+    echo    '<div class="ratings-container">
+                <div class="ratings">
+                    <div class="ratings-val" style="width: 80%;"></div>
+                </div>
+                <span class="ratings-text">( 6 Reviews )</span>
+            </div>';
 }
 
 
-remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
-add_action( 'woocommerce_paging', 'woocommerce_breadcrumb', 10 );
-//remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
-
-add_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );  
-//add_action( 'woocommerce_before_main_content', '_item_title' );
-
-remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
-    add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_loop');
-    add_action ( 'woocommerce_before_shop_loop' ,  'before_shop_toolbox', 10 );    
-    add_action ( 'woocommerce_before_shop_loop' ,  'after_shop_toolbox', 50 );
-
-    //-- shop loop itmes
-    remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ); 
-    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 10 );
-
-    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
-    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
-    
-        add_action ( 'woocommerce_before_shop_loop_item' ,  'before_shop_loop_item');
-        add_action ( 'woocommerce_before_shop_loop_item' ,  'add_before_figure', 40);
-
-            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_show_product_loop_sale_flash', 10);
-            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_open');
-            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_thumbnail');
-            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'woocommerce_template_loop_product_link_close');
-            add_action ( 'woocommerce_before_shop_loop_item_title' ,  'product_action_vertical');
-            
-        add_action ( 'woocommerce_before_shop_loop_item_title' ,  'add_after_figure', 20); 
-
-        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_before_body_item', 0);
-        add_action ( 'woocommerce_shop_loop_item_title' ,  'product_item_cat', 1);
-        
-        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_item_rate', 20);
-        add_action ( 'woocommerce_after_shop_loop_item_title' ,  'product_after_body_item', 30);
-
-        add_action ( 'woocommerce_after_shop_loop_item' ,  'after_shop_loop_item');
-
-    add_action ( 'woocommerce_after_shop_loop' ,  'after_shop_loop');
-
-add_action ( 'woocommerce_output_content_wrapper_end' ,  '_output_content_wrapper_end', 50);
-
-
-
-add_action( 'woocommerce_after_shop_loop_item', 'remove_add_to_cart_buttons', 1 );
-function remove_add_to_cart_buttons() { 
-    remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' ); 
-}
-
-
-add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_add_to_cart', 10 );
-
-//add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-
-//remove_action
-//add_action('woocommerce_sidebar','_get_sidebar');
- 
-/**
- * for product loop
- */
-
- function woocommerce_template_loop_product_title() {
-    global $product;
-    $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
-	echo '<h3 class="' . esc_attr( apply_filters( 'woocommerce_product_loop_title_classes', 'product-title' ) ) . '">  <a href="' . esc_url( $link ) . '">' . get_the_title() . '</a></h3>';
-}
-
-
-
-//------------- 
 
 ?>

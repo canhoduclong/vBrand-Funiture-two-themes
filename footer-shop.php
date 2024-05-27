@@ -1,4 +1,6 @@
 <?php $themeData = vbrand_load_theme_data(); ?>
+
+			</main>
 			<footer class="footer footer-2">
 				<div class="footer-bottom">
 					<div class="container">
@@ -11,7 +13,7 @@
 						</ul>
 						
 						<!-- End .footer-menu -->
-						<div class="social-icons social-icons-color">
+						<div class="social-icons social-iscons-color">
 							<a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
 							<a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
 							<a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>

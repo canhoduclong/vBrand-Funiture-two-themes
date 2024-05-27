@@ -21,14 +21,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header( 'shop' ); ?>
 
+
+
 	<?php
+		/**
+		 * @hooked woocommerce_breadcrumb - 20
+		 */
+		do_action('woocommerce_custom_breadcrumb');
+		
+		/**
+		 * woocommerce_custom_content_wrapper hook.
+		 * woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+		 */
+		do_action( 'woocommerce_custom_content_wrapper' );
 		/**
 		 * woocommerce_before_main_content hook.
 		 *
 		 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
 		 * @hooked woocommerce_breadcrumb - 20
 		 */
-		//do_action( 'woocommerce_before_main_content' );
+		do_action( 'woocommerce_before_main_content' );
 	?>
 
 		<?php while ( have_posts() ) : ?>
