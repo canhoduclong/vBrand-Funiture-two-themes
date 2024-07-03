@@ -107,7 +107,6 @@
 							<ul>
 								<li>
 									<a href="about.html">About</a>
-
 									<ul>
 										<li><a href="about.html">About 01</a></li>
 										<li><a href="about-2.html">About 02</a></li>
@@ -115,7 +114,6 @@
 								</li>
 								<li>
 									<a href="contact.html">Contact</a>
-
 									<ul>
 										<li><a href="contact.html">Contact 01</a></li>
 										<li><a href="contact-2.html">Contact 02</a></li>
@@ -129,7 +127,6 @@
 						</li>
 						<li>
 							<a href="blog.html">Blog</a>
-
 							<ul>
 								<li><a href="blog.html">Classic</a></li>
 								<li><a href="blog-listing.html">Listing</a></li>
@@ -206,7 +203,9 @@
 					<div class="row no-gutters bg-white newsletter-popup-content">
 						<div class="col-xl-3-5col col-lg-7 banner-content-wrap">
 							<div class="banner-content text-center">
-								<img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
+								<?php if ($themeData->get('site_logo')) { ?>
+                                    <img src="<?php echo $themeData->get('site_logo'); ?>" class="logo" alt="logo" width="60" height="15">
+                                <?php }?>
 								<h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
 								<p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite products.</p>
 								<form action="#">
@@ -224,13 +223,14 @@
 							</div>
 						</div>
 						<div class="col-xl-2-5col col-lg-5 ">
-							<img src="assets/images/popup/newsletter/img-1.jpg" class="newsletter-img" alt="newsletter">
+							News Letter Img 
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		
+ 
 		<?php  wp_footer(); ?>
 
 		<!-- Plugins JS File -->

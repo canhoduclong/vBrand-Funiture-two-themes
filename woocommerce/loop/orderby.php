@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<div class="toolbox-layout">
-		<a href="#" class="btn-layout active">
+		<a href="http://kimkhi.com/gian-hang-2/?view=list" class="btn-layout active">
 			<svg width="16" height="10">
 				<rect x="0" y="0" width="4" height="4"></rect>
 				<rect x="6" y="0" width="10" height="4"></rect>
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</svg>
 		</a>
 
-		<a href="#" class="btn-layout">
+		<a href="http://kimkhi.com/gian-hang-2/?view=grid&grid=2" class="btn-layout">
 			<svg width="10" height="10">
 				<rect x="0" y="0" width="4" height="4"></rect>
 				<rect x="6" y="0" width="4" height="4"></rect>
@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</svg>
 		</a>
 
-		<a href="#" class="btn-layout">
+		<a href="http://kimkhi.com/gian-hang-2/?view=grid&grid=3" class="btn-layout">
 			<svg width="16" height="10">
 				<rect x="0" y="0" width="4" height="4"></rect>
 				<rect x="6" y="0" width="4" height="4"></rect>
@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</svg>
 		</a>
 
-		<a href="#" class="btn-layout">
+		<a href="http://kimkhi.com/gian-hang-2/?view=grid&grid=4" class="btn-layout">
 			<svg width="22" height="10">
 				<rect x="0" y="0" width="4" height="4"></rect>
 				<rect x="6" y="0" width="4" height="4"></rect>

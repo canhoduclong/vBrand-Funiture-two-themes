@@ -7,8 +7,7 @@
             <div class="col-lg-12">
                 <h2 class="section-title">
                     <?php the_title(); ?>
-                </h2>
-                
+                </h2> 
             </div> 
             <div class="col-lg-12">
                 <?php if ( have_posts() ) : ?>
@@ -16,7 +15,7 @@
                         <?php the_content(); ?>
                     <?php endwhile;  ?>
                 <?php else: ?>
-                    <p>!Sorry no posts here</p>
+                    <p>!Sorry no compare here</p>
                 <?php endif; ?>
             </div> 
         </div> 

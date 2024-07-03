@@ -7,9 +7,7 @@ $themeData = vbrand_load_theme_data();
 
 ?>
  
-
-
-
+  
 
 			<div class="intro-slider-container mb-4">
                 <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
@@ -23,7 +21,7 @@ $themeData = vbrand_load_theme_data();
                         }
                     }'>
 					
-					<div class="intro-slide" style="background-image: url(<?=get_template_directory_uri()?>/assets/images/demos/demo-11/slider/slide-1.jpg);">
+					<div class="intro-slide" style="background-image: url(<?php echo $themeData->get('banner_image'); ?>">
                         <div class="container intro-content">
                             <h3 class="intro-subtitle text-primary"><?php echo $themeData->get('banner_title');?></h3>
                             <h1 class="intro-title"><?php echo $themeData->get('banner_intro_title');?></h1>
@@ -35,18 +33,7 @@ $themeData = vbrand_load_theme_data();
                         </div><!-- End .intro-content -->
                     </div><!-- End .intro-slide -->
 
-					<div class="intro-slide" style="background-image: url(<?=get_template_directory_uri()?>/assets/images/demos/demo-11/slider/slide-2.jpg);">
-                        <div class="container intro-content">
-                            <h3 class="intro-subtitle text-primary">all at 50% off</h3><!-- End .h3 intro-subtitle -->
-                            <h1 class="intro-title text-white">The Most Beautiful <br>Novelties In Our Shop</h1><!-- End .intro-title -->
-
-                            <a href="category.html" class="btn btn-outline-primary-2 min-width-sm">
-                                <span>SHOP NOW</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-
+					 
                     
 
                 </div><!-- End .intro-slider owl-carousel owl-simple -->
@@ -60,7 +47,7 @@ $themeData = vbrand_load_theme_data();
 
 
 			<div class="container"> 
-				<div class="products">
+				<div class="products mb-3">
                     <div class="row">
 
 					<?php if ($themeData->get('products_module_show')) { ?>
@@ -116,6 +103,24 @@ $themeData = vbrand_load_theme_data();
 						} 
 						
 						$products = new WP_Query($args);
+
+
+						
+	if ( woocommerce_product_loop() ) {	
+		
+		/**
+		 * Hook: woocommerce_before_shop_loop.
+		 *
+		 * @hooked woocommerce_output_all_notices - 10
+		 * @hooked woocommerce_result_count - 20
+		 * @hooked woocommerce_catalog_ordering - 30
+		 */
+		do_action( 'woocommerce_before_shop_loop' );
+
+		woocommerce_product_loop_start();
+
+
+
 						if ($products->have_posts()){ 
 							$i=1;
 							while ($products->have_posts()){
@@ -124,13 +129,27 @@ $themeData = vbrand_load_theme_data();
                                 /**
                                  * Hook: woocommerce_shop_loop.
                                  */
-                                do_action( 'woocommerce_shop_loop' );
+                                do_action( 'woocommerce_shop_loop' ); 
 
                                 wc_get_template_part( 'content', 'product' );
+								 
 								$i++;
 							}
 						}
 						wp_reset_postdata(); // Đặt lại truy vấn sản phẩm
+					
+		
+			woocommerce_product_loop_end();
+
+			/**
+			 * Hook: woocommerce_after_shop_loop.
+			 *
+			 * @hooked woocommerce_pagination - 10
+			 */
+			do_action( 'woocommerce_after_shop_loop' );
+
+					}
+
 					?> 
 
 					<?php }?>

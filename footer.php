@@ -6,7 +6,9 @@
 	            	<div class="row">
 	            		<div class="col-sm-6 col-lg-3">
 	            			<div class="widget widget-about">
-	            				<img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+								<?php if ($themeData->get('site_logo')) { ?>
+                                    <img src="<?php echo $themeData->get('site_logo'); ?>"  width="82" height="25">
+                                <?php } ?>
 	            				<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
 
 	            				<div class="social-icons">
@@ -69,7 +71,7 @@
 	        	<div class="container">
 	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
 	        		<figure class="footer-payments">
-	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+	        			 Payment method 
 	        		</figure><!-- End .footer-payments -->
 	        	</div><!-- End .container -->
 	        </div><!-- End .footer-bottom -->
@@ -259,7 +261,11 @@
 					<div class="row no-gutters bg-white newsletter-popup-content">
 						<div class="col-xl-3-5col col-lg-7 banner-content-wrap">
 							<div class="banner-content text-center">
-								<img src="<?=get_template_directory_uri()?>/assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
+
+								<?php if ($themeData->get('site_logo')) { ?>
+                                    <img src="<?php echo $themeData->get('site_logo'); ?>" class="logo" alt="logo" width="60" height="15">
+                                <?php }?>
+								
 								<h2 class="banner-title">Giảm ngay <span>25<light>%</light></span> Sản phẩm</h2>
 								<p>Cho khách hàng đặt mua bất kỳ sản phẩm nào tới ngày 30/04/2024.</p>
 								<form action="#">
@@ -283,6 +289,9 @@
 				</div>
 			</div>
 		</div>
+
+ 
+
 
 		<?php  wp_footer(); ?>
 

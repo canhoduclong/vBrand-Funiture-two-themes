@@ -45,7 +45,7 @@ if ( post_password_required() ) {
 			?>
 		</div>
 		<div class="col-md-6">
-			<div class="summary entry-summary">
+			<div class="product-details">
 				<?php
 				/**
 				 * Hook: woocommerce_single_product_summary.
@@ -65,14 +65,10 @@ if ( post_password_required() ) {
 		</div>
 	</div>
 </div>
-<div class="product-details-tab product-details-extended">
-	<div class="container">
-		<ul class="nav nav-pills justify-content-center" role="tablist">
-			<li class="nav-item">
-				<a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
-			</li>
-		</ul>
-		<div class="tab-content">
+
+<div class="product-details-tab">
+ 
+		
 			<?php
 			/**
 			 * Hook: woocommerce_after_single_product_summary.
@@ -83,26 +79,24 @@ if ( post_password_required() ) {
 			 */
 			do_action( 'woocommerce_after_single_product_summary' );
 			?>
-		</div>
-	</div>
+		 
+	 
 </div>
-<div class="container">
-	<h2 class="title text-center mb-4">You May Also Like</h2>
+<div class="container"> 
 	<div class="upsale">
 		<?php 
 			do_action( 'woocommerce_upsale_product' );
 		?>
 	</div>
 </div>
-<div class="container">
-	<h2 class="title text-center mb-4">You May Also Like</h2>
+<div class="container"> 
 	<div>
 		<?php 
 			/**
 			 * Hook:
 			 * @hooked woocommerce_output_related_products - 20
 			 */
-			do_action( 'woocommerce_related_product' );
+			//do_action( 'woocommerce_related_product' );
 		?>
 	</div>
 </div>

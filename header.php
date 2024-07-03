@@ -123,15 +123,32 @@
                             <div class="dropdown cart-dropdown">
                                 <a href="<?php echo home_url('/');?>/card" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
-                                    <span class="cart-txt">$ 164,00</span>
-                                </a>
+                                    <span class="cart-count">0</span>
+                                    <span class="cart-txt">0</span>
+                                </a> 
 
-                                <?php do_shortcode('[short_menu_cart]'); ?>
- 
+                                <div class="dropdown-menu dropdown-menu-right" id="minicart">
+                                    <div id="minicart-content">
+                                        <a href="javascript:;" id="close-minicart">×</a>
+                                        <div class="dropdown-cart-products" id="minicart-items"> 
 
+                                        </div><!-- End .cart-product -->
+
+                                        <div class="dropdown-cart-total">
+                                            <span>Tổng tiền</span>
+
+                                            <span class="cart-total-price" id="minicart-subtotal">00</span>
+                                        </div><!-- End .dropdown-cart-total -->
+
+                                        <div class="dropdown-cart-action">
+                                            <a href="/cart" class="btn btn-primary">Giỏ hàng</a>
+                                            <a href="/checkout" class="btn btn-outline-primary-2"><span>Thanh toán</span><i class="icon-long-arrow-right"></i></a>
+                                        </div><!-- End .dropdown-cart-total -->
+                                    </div>
+                                </div> 
                                 <!-- End .dropdown-menu -->
                             </div><!-- End .cart-dropdown -->
+                            
                         </div><!-- End .header-right -->
                     </div><!-- End .container -->
                 </div><!-- End .header-middle -->

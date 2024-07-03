@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css?family=Poppins:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800");
+﻿@import url("https://fonts.googleapis.com/css?family=arial:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800");
 html {
   font-size: 62.5%;
   -webkit-text-size-adjust: 100%;
@@ -10,7 +10,7 @@ body {
   height: 100%;
 }
 body {
-  font: normal 300 1.4rem/1.86 "Poppins", sans-serif;
+  font: normal 300 1.4rem/1.86 "arial", sans-serif;
   color: #666;
   background-color: #fff;
   -webkit-font-smoothing: antialiased;
@@ -773,13 +773,13 @@ blockquote.text-white cite span {
 .cart-dropdown .dropdown-menu,
 .compare-dropdown .dropdown-menu {
   display: block;
-  width: 300px;
+  width: 320px;
   z-index: 100;
   font-size: 1.3rem;
   z-index: 1001;
   border: none;
   margin: 1px 0 0;
-  padding: 2.2rem 3rem 2.5rem;
+  padding: 2.2rem 1.5rem 2.5rem;
   border-radius: 0;
   border: none;
   box-shadow: 5px 10px 16px rgba(51, 51, 51, 0.05),
@@ -2651,13 +2651,13 @@ blockquote.text-white cite span {
   color: #333;
 }
 a {
-  font-family: "Poppins";
+  font-family: "arial";
 }
 p {
   margin-bottom: 0;
   font-size: 1.4rem;
   font-weight: 300;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0;
   color: #777;
 }
@@ -2678,7 +2678,7 @@ p {
 }
 .header-2 .header-search-extended .form-control {
   padding: 1.2rem 2.4rem 1rem 2rem;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: -0.01em;
 }
 .header-2 .header-search-extended .btn {
@@ -5069,7 +5069,7 @@ p {
 }
 .page-header h1 {
   color: #333;
-  font: normal 400 3.2rem/1.1 "Poppins", sans-serif;
+  font: normal 400 3.2rem/1.1 "arial", sans-serif;
   letter-spacing: -0.025em;
   margin-bottom: 0;
 }
@@ -5789,7 +5789,7 @@ p {
   letter-spacing: 0;
   font-size: 1.4rem;
   min-width: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "arial", sans-serif;
 }
 .btn-link.btn-link-dark {
   color: #333;
@@ -7477,7 +7477,7 @@ p {
 .product.product-10 .product-title a {
   font-size: 1.3rem;
   font-weight: 400;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0;
   color: #333;
 }
@@ -7489,20 +7489,20 @@ p {
   margin-top: 0.8rem;
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0;
   color: #333333;
 }
 .product.product-10 .new-price {
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0;
 }
 .product.product-10 .old-price {
   font-size: 1.3rem;
   font-weight: 400;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0;
   text-decoration: none;
 }
@@ -7511,7 +7511,7 @@ p {
   text-transform: uppercase;
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: -0.01em;
 }
 .product.product-10 .product-label.label-deal {
@@ -9346,7 +9346,7 @@ small.form-text {
 .element-type {
   font-size: 1.3rem;
   font-weight: 400;
-  font-family: "Poppins";
+  font-family: "arial";
   letter-spacing: 0.01em;
   color: #666;
   text-transform: uppercase;
@@ -10730,6 +10730,7 @@ button:focus {
   font-weight: 400;
   font-size: 1.4rem;
   margin-bottom: 0;
+  text-transform: capitalize !important;
 }
 .details-filter-row .product-nav {
   margin-bottom: 0;
@@ -16350,4 +16351,96 @@ button:focus {
 }
 .product .ratings-container{
     margin-bottom: 1.7rem !important;
+}
+
+.open{
+  visibility: visible !important;
+  display: block !important; 
+  opacity: 1 !important;
+}
+.close{
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+}
+
+#minicart {
+  min-height: 200px;  
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#minicart-content {
+  padding: 10px;
+  position: relative;
+}
+#close-minicart{
+  text-align: right;
+  position: absolute;
+  right: -38px;
+  top: -15px;
+  padding: 7px;
+  line-height: 12px;
+  background-color: #fff;
+}
+.cart-dropdown .cart-txt {
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #222;
+  margin-left: 1rem;
+  margin-top: -.5rem;
+  transition: all .3s;
+}
+
+
+.minicart-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.minicart-item-name {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.minicart-item-quantity {
+  font-size: 14px;
+  color: #666;
+}
+
+/*
+  custom defind
+*/
+
+.color-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/*
+.color-link {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: background-color 0.3s;
+}
+
+.color-link.active, .color-link:hover {
+  opacity: 0.9;
+  border-color: #333 !important;
+}
+*/
+.gander-link{
+  text-transform: capitalize;
+}
+.gander-link.active {
+  border-color: #c96 !important;
+  border-width: 2px !important;
+  color:  #c96 !important;
 }

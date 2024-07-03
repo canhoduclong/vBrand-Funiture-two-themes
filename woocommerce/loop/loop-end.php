@@ -20,5 +20,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-</div>
+<!--/div-->
 <!--/ul-->

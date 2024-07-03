@@ -29,52 +29,59 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 	<?php do_action( 'woocommerce_before_variations_form' ); ?>
 
 	<?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
+	
 		<p class="stock out-of-stock"><?php echo esc_html( apply_filters( 'woocommerce_out_of_stock_message', __( 'This product is currently out of stock and unavailable.', 'woocommerce' ) ) ); ?></p>
+	
 	<?php else : ?>
-		<table class="variations" cellspacing="0" role="presentation">
-			<tbody>
-				<?php foreach ( $attributes as $attribute_name => $options ) : ?>
-					<tr>
-						<th class="label"><label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?></label></th>
-						<td class="value">
-							<?php
-								wc_dropdown_variation_attribute_options(
-									array(
-										'options'   => $options,
-										'attribute' => $attribute_name,
-										'product'   => $product,
-									)
-								);
-								echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woocommerce' ) . '</a>' ) ) : '';
-							?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+
+
+		<div class="variations">		 
+			<?php foreach ( $attributes as $attribute_name => $options ) : ?>
+				<div class="details-filter-row details-row-size">
+					
+					<label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?></label>
+					<div class="<?=$attribute_name?>-links"></div>
+					<?php
+						wc_dropdown_variation_attribute_options(
+							array(
+								'options'   => $options,
+								'attribute' => $attribute_name,
+								'product'   => $product,
+							)
+						);
+						echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woocommerce' ) . '</a>' ) ) : '';
+					?>
+				</div> 
+			<?php endforeach; ?> 
+		</div>
+		
+
 		<?php do_action( 'woocommerce_after_variations_table' ); ?>
 
-		<div class="single_variation_wrap">
-			<?php
-				/**
-				 * Hook: woocommerce_before_single_variation.
-				 */
-				do_action( 'woocommerce_before_single_variation' );
+		<div class="product-details-action">
+			<div class="single_variation_wrap">
+ 
+				<?php
+					/**
+					 * Hook: woocommerce_before_single_variation.
+					 */
+					do_action( 'woocommerce_before_single_variation' );
 
-				/**
-				 * Hook: woocommerce_single_variation. Used to output the cart button and placeholder for variation data.
-				 *
-				 * @since 2.4.0
-				 * @hooked woocommerce_single_variation - 10 Empty div for variation data.
-				 * @hooked woocommerce_single_variation_add_to_cart_button - 20 Qty and cart button.
-				 */
-				do_action( 'woocommerce_single_variation' );
+					/**
+					 * Hook: woocommerce_single_variation. Used to output the cart button and placeholder for variation data.
+					 *
+					 * @since 2.4.0
+					 * @hooked woocommerce_single_variation - 10 Empty div for variation data.
+					 * @hooked woocommerce_single_variation_add_to_cart_button - 20 Qty and cart button.
+					 */
+					do_action( 'woocommerce_single_variation' );
 
-				/**
-				 * Hook: woocommerce_after_single_variation.
-				 */
-				do_action( 'woocommerce_after_single_variation' );
-			?>
+					/**
+					 * Hook: woocommerce_after_single_variation.
+					 */
+					do_action( 'woocommerce_after_single_variation' );
+				?>
+			</div>
 		</div>
 	<?php endif; ?>
 

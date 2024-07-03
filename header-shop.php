@@ -31,11 +31,13 @@
         
         <!-- Plugins CSS File -->
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/bootstrap.min.css">
+  
+
+        <!-- Main CSS File -->
+        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/style.css">
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/plugins/owl-carousel/owl.carousel.css">
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/plugins/magnific-popup/magnific-popup.css">
-        
-        <!-- Main CSS File -->
-        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/style.css"> 
+        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/plugins/nouislider/nouislider.css">
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/demos/demo-11.css">
         
     </head>
@@ -115,20 +117,37 @@
                                 <?php echo do_shortcode('[custom_product_search]'); ?>
                             </div><!-- End .header-search -->
                             
-                            <a href="<?php echo home_url('/');?>/wishlist" class="wishlist-link">
-                                <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count">3</span>
+                            <a href="<?php echo home_url('/');?>compare" class="wishlist-link">
+                                <i class="icon-compare"></i>
+                                    <span class="wishlist-count">0</span>
                             </a>
 
                             <div class="dropdown cart-dropdown">
                                 <a href="<?php echo home_url('/');?>/card" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
-                                     
-                                </a>
+                                    <span class="cart-count">0</span>
+                                    <span class="cart-txt">0</span>
+                                </a> 
 
-                                <?php do_shortcode('[short_menu_cart]'); ?> 
+                                <div class="dropdown-menu dropdown-menu-right" id="minicart">
+                                    <div id="minicart-content">
+                                        <a href="javascript:;" id="close-minicart">×</a>
+                                        <div class="dropdown-cart-products" id="minicart-items"> 
 
+                                        </div><!-- End .cart-product -->
+
+                                        <div class="dropdown-cart-total">
+                                            <span>Tổng tiền</span>
+
+                                            <span class="cart-total-price" id="minicart-subtotal">00</span>
+                                        </div><!-- End .dropdown-cart-total -->
+
+                                        <div class="dropdown-cart-action">
+                                            <a href="/cart" class="btn btn-primary">Giỏ hàng</a>
+                                            <a href="/checkout" class="btn btn-outline-primary-2"><span>Thanh toán</span><i class="icon-long-arrow-right"></i></a>
+                                        </div><!-- End .dropdown-cart-total -->
+                                    </div>
+                                </div> 
                                 <!-- End .dropdown-menu -->
                             </div><!-- End .cart-dropdown -->
 

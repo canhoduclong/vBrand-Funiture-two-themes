@@ -1,19 +1,5 @@
 <?php 
-    get_header('shop');  
- 
-	if ( isset( $_GET['filter_pa_size'] ) && ! empty( $_GET['filter_pa_size'] ) ) {
-		$terms = explode( ',', sanitize_text_field( $_GET['filter_pa_size'] ) );
-		$tax_query = (array)$query->get( 'tax_query' );
-		$tax_query[] = array(
-			'taxonomy' => 'pa_size', // Change 'pa_size' to your attribute
-			'field'    => 'slug',
-			'terms'    => $terms,
-			'operator' => 'IN', // Change operator as per requirement
-		);
-		// echo "<pre>"; print_r($tax_query); echo "<pre>";
-		$query->set( 'tax_query', $tax_query );
-	}
-
+    get_header('shop');
 ?> 
 <div class="page-header text-center" style="background-image: url('<?=get_template_directory_uri()?>/assets/images/page-header-bg.jpg')">
     <div class="container">
@@ -37,7 +23,7 @@
 	 * @hooked WC_Structured_Data::generate_website_data() - 30
 	 */
 	do_action( 'woocommerce_before_main_content' ); 
-
+	
 	/**
 	 * Hook: woocommerce_archive_description.
 	 *
@@ -58,18 +44,18 @@
 		do_action( 'woocommerce_before_shop_loop' );
 
 		woocommerce_product_loop_start();
-
+ 
 		if ( wc_get_loop_prop( 'total' ) ) {
 			while ( have_posts() ) {
 				the_post();
-
 				/**
 				 * Hook: woocommerce_shop_loop.
 				 */
 				do_action( 'woocommerce_shop_loop' );
-
+				 
 				wc_get_template_part( 'content', 'product' );
-			}
+				
+			} 
 		}
 
 		woocommerce_product_loop_end();
@@ -80,6 +66,7 @@
 		 * @hooked woocommerce_pagination - 10
 		 */
 		do_action( 'woocommerce_after_shop_loop' );
+
 	} else {
 		/**
 		 * Hook: woocommerce_no_products_found.
@@ -108,7 +95,11 @@
 	do_action( 'woocommerce_after_main_content' );
 
 
-	
+ 
+?>
+
+
+<?php 
 
 get_footer( 'shop' );
 

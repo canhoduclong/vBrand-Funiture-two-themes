@@ -4,7 +4,14 @@
  */
 get_header();
 ?>
-   
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<?php echo home_url('/');?>">Trang chủ</a></li> 
+            <li class="breadcrumb-item active" aria-current="page">Dịch vụ</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
   <!-- About Start -->
         
   <div class="container"> 
