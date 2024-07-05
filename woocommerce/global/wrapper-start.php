@@ -46,6 +46,9 @@ switch ( $template ) {
 	case 'shop':
 		echo '<div class="page-content"><div class="container">';
 		break;
+	case 'vBrand-Funiture-two-themes':
+		echo '<div class="page-content"><div class="container">';
+		break;
 	default:
 		echo '<div id="primary" class="content-area"><main id="main" class="site-main" role="main">';
 		break;
