@@ -16444,3 +16444,8 @@ button:focus {
   border-width: 2px !important;
   color:  #c96 !important;
 }
+
+.logo img{
+  max-width:82px;
+  max-height:25px;
+}

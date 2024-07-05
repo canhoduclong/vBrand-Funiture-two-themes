@@ -55,12 +55,12 @@
 
                             <a class="logo" href="<?php echo home_url('/');?>">
                                 <?php if ($themeData->get('site_logo')) { ?>
-                                    <img src="<?php echo $themeData->get('site_logo'); ?>"  width="82" height="25">
+                                    <img src="<?php echo $themeData->get('site_logo'); ?>" >
                                 <?php } else { ?>
                                     Shop Funiture
                                 <?php } ?> 
                             </a>
-asdasdad
+ 
                             <nav class="main-nav">
                                 <ul class="menu sf-arrows">
 
