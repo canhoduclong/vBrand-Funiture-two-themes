@@ -180,6 +180,7 @@ function custom_shop_page_query($query) {
 
             $query->set('tax_query', $tax_query);
         }
+        return $query;
    // }
 }
 
@@ -291,6 +292,7 @@ function filter_products_by_category($query) {
 
         $query->set('tax_query', $tax_query);
     }
+    return $query;
 }
 
 // Hook to filter products based on selected categories
@@ -365,37 +367,60 @@ add_shortcode('short_menu_cart', 'short_menu_cart_function');
 add_action( 'after_setup_theme', function() {
     add_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 9 );
     add_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
-    add_action( 'pre_get_posts', 'custom_woocommerce_product_query' );
+    //add_action( 'pre_get_posts', 'custom_woocommerce_product_query' );
     add_action( 'woocommerce_sidebar', 'show_attribute_sidebar', 10 ); 
     
 });
-
  
  
 /**
- *  woocommerce
+ *  woocommerce search attribute
  */ 
+ 
+/**
+ * Search area
+ */
+function search_by_attributes( $query ) {    
+    if ((is_shop() || is_product_category() || is_product_tag()) && !is_admin() && $query->is_main_query()) {
+        // Cancel if search term is empty   
+        
+        if(isset($_GET['filter_pa_size']) && !empty($_GET['filter_pa_size'])){    
+            
+            $size = sanitize_text_field($_GET['filter_pa_size']);
+            $size_values = explode(',', $size);
 
-   
+            $tax_query = $query->get('tax_query');
+            if (!is_array($tax_query)) {
+                $tax_query = array();
+            }
 
-
-function custom_woocommerce_product_query( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && ( is_shop() || is_product_category() || is_product_tag() ) ) {
-        if ( isset( $_GET['filter_pa_size'] ) && ! empty( $_GET['filter_pa_size'] ) ) {
-            $terms = explode( ',', sanitize_text_field( $_GET['filter_pa_size'] ) );
-            $tax_query = (array)$query->get( 'tax_query' );
-            $tax_query[] = array(
-                'taxonomy' => 'pa_size', // Change 'pa_size' to your attribute
-                'field'    => 'slug',
-                'terms'    => $terms,
-                'operator' => 'IN', // Change operator as per requirement
-            );
-            // echo "<pre>"; print_r($tax_query); echo "<pre>";
-            $query->set( 'tax_query', $tax_query );
-        }
-           
+            $size_tax_query = array('relation' => 'OR');
+            foreach ($size_values as $single_size) {
+                $size_tax_query[] = array(
+                    'taxonomy' => 'pa_size', // Replace with the correct taxonomy for size
+                    'field'    => 'slug',   // You can use 'slug' or 'term_id' depending on your needs
+                    'terms'    => $single_size,
+                    'operator' => 'IN'
+                );
+            }
+            $query->set('tax_query',$size_tax_query );  
+            $query->set('post_type',  array('product', 'product_variation') );
+        } 
+        return $query;
     }
 }
+add_filter('pre_get_posts','search_by_attributes');
+
+ 
+
+function debug_woocommerce_shop_query($query) {
+    if (is_shop() && $query->is_main_query()) {
+       // echo '<pre>';  print_r($query); echo '</pre>';
+    }
+}
+add_action('pre_get_posts', 'debug_woocommerce_shop_query');
+
+
 
 //------- update sortcard
 function enqueue_custom_scripts() {
@@ -496,6 +521,7 @@ function get_cart_data() {
 
 add_action('wp_ajax_get_cart_data', 'get_cart_data');
 add_action('wp_ajax_nopriv_get_cart_data', 'get_cart_data');
+
 
 
 
@@ -1149,35 +1175,7 @@ function product_item_rate(){
                 <span class="ratings-text">( 6 Reviews )</span>
             </div>';
 }
-/**
- * Search area
- */
-function search_by_attributes( $query ) {       
-    
-    // Cancel if search is in admin panel or not for products
-    if(is_admin() || $query->get( 'post_type' ) != 'product' )
-        return $query;
-    
-    if ((is_shop() || is_product_category() || is_product_tag()) && !is_admin() && $query->is_main_query()) {
-        
-        // Cancel if search term is empty   
-        if(isset($_GET['filter_pa_size']) && !empty($_GET['filter_pa_size'])){
-             
-            $meta_query = array('relation' => 'OR'); 
-            $meta_query[] = array(
-                'taxonomy'     => 'pa_size', 
-                'field'    => 'slug',
-                'terms'    => $_GET['filter_pa_size'],
-                'operator' => 'IN',
-            
-            );            
-            $query->set('meta_query',$meta_query );             
-        }   
-        return $query;
-    }
-   
-}
-add_filter('pre_get_posts','search_by_attributes');
+
 /*
     --- dang lam 
 */
