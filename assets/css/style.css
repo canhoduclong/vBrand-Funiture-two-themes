@@ -564,8 +564,8 @@ blockquote.text-white cite span {
 }
 .logo img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  max-height: 82px;
+  width: auto;
 }
 .header-top {
   font-weight: 300;
@@ -16444,8 +16444,4 @@ button:focus {
   border-width: 2px !important;
   color:  #c96 !important;
 }
-
-.logo img{
-  max-width:82px;
-  max-height:25px;
-}
+ 
