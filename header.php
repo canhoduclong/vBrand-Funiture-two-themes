@@ -50,15 +50,14 @@
                                 <span class="sr-only">Toggle mobile menu</span>
                                 <i class="icon-bars"></i>
                             </button>
-
+ 
                             <a class="logo" href="<?php echo home_url('/');?>">
                                 <?php if ($themeData->get('site_logo')) { ?>
                                     <img src="<?php echo $themeData->get('site_logo'); ?>"  width="82" height="25">
                                 <?php } else { ?>
                                     Shop Funiture
                                 <?php } ?> 
-                            </a>
-                            
+                            </a> 
                         </div>
                         <!-- End .header-left -->
 
@@ -66,9 +65,10 @@
 
                             <nav class="main-nav">
                                 <ul class="menu sf-arrows">
-
+ 
                                     <?php 
-                                    foreach ($themeData->get('menus') as $key => $menu) {
+                                  
+                                    foreach ($themeData->get('menus') as $key => $menu) { 
                                         if ($menu['show'] == 'true') {
                                             if ($menu['type'] == 'page-homepage.php')
                                             {
@@ -80,10 +80,12 @@
                                                 $page = vbrand_getOrCreatePageByTemplate('page-aboutus.php');
                                                 $menuLink = get_permalink( $page->ID );
 
-                                            } else if ($menu['type'] == 'shop') {
-                                                if (class_exists('WooCommerce')) {
+                                            } else if ($menu['type'] == 'shop') { 
+                                                if (class_exists('WooCommerce')) { 
                                                     if(get_option( 'woocommerce_shop_page_id' )){
-                                                        $menuLink = get_permalink( get_option( 'woocommerce_shop_page_id' ) ); 
+                                                        //$menuLink = get_permalink( get_option( 'woocommerce_shop_page_id' ) ); 
+                                                        $menuLink = get_permalink( wc_get_page_id( 'shop' ) );
+                                                        
                                                     }else{
                                                         echo "không tim thấy trang shop, vui lòng kiểm tra cấu hình của woocomerce";
                                                     }

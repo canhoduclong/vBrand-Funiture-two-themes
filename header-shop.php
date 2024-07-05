@@ -60,6 +60,7 @@
                                     Shop Funiture
                                 <?php } ?> 
                             </a>
+asdasdad
                             <nav class="main-nav">
                                 <ul class="menu sf-arrows">
 
@@ -79,7 +80,8 @@
                                             } else if ($menu['type'] == 'shop') {
                                                 if (class_exists('WooCommerce')) {
                                                     if(get_option( 'woocommerce_shop_page_id' )){
-                                                        $menuLink = get_permalink( get_option( 'woocommerce_shop_page_id' ) ); 
+                                                        //$menuLink = get_permalink( get_option( 'woocommerce_shop_page_id' ) ); 
+                                                        $menuLink = get_permalink( wc_get_page_id( 'shop' ) );
                                                     }else{
                                                         echo "không tim thấy trang shop, vui lòng kiểm tra cấu hình của woocomerce";
                                                     }
