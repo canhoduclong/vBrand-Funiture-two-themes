@@ -17,20 +17,22 @@
         </ol>
     </div><!-- End .container -->
 </nav><!-- End .breadcrumb-nav -->
-<div class="product-section" id="product">
-    <div class="container">
-        <div class="row">   
-            <div class="col-lg-12">
-                <?php if ( have_posts() ) : ?>
-                    <?php while ( have_posts() ) : the_post();?>
-                        <?php the_content(); ?>
-                    <?php endwhile;  ?>
-                <?php else: ?>
-                    <p>!Sorry no posts here</p>
-                <?php endif; ?>
+<div class="page-content">
+    <div class="checkout">
+        <div class="container">
+            <div class="row">   
+                <div class="col-lg-12">
+                    <?php if ( have_posts() ) : ?>
+                        <?php while ( have_posts() ) : the_post();?>
+                            <?php the_content(); ?>
+                        <?php endwhile;  ?>
+                    <?php else: ?>
+                        <p>!Sorry no posts here</p>
+                    <?php endif; ?>
+                </div> 
             </div> 
         </div> 
-    </div> 
+    </div>
 </div>
 <?php
 	get_footer();

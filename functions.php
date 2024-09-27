@@ -528,6 +528,7 @@ add_action('wp_ajax_nopriv_get_cart_data', 'get_cart_data');
 
 function initial(){
     
+    //-- listings for shop and category pages
     if(is_shop() || is_product_category() || is_product_tag() ) { 
         add_action( 'wp_enqueue_scripts', 'custom_enqueue_scripts' ); 
         /**
@@ -597,28 +598,25 @@ function initial(){
         add_action( 'woocommerce_after_shop_loop_item', 'remove_add_to_cart_buttons', 1 );
        
     }
+    //-- listings for homepage product
     if(is_front_page()){
         add_action( 'wp_enqueue_scripts', 'custom_enqueue_scripts' );  
 
         /**`
-         *  content-product.phps
+         *  content-product.php
          */
         remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ); 
         remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 10 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
         
+        add_action ( 'woocommerce_before_shop_loop_item' ,  'before_shop_loop_item'); //----> Defind List or Grid Products
         
-        add_action ( 'woocommerce_before_shop_loop_item' ,  'before_shop_loop_item');   //----> Defind List or Grid Products
-        
-      
         grid_items();
-         
 
-        add_action ( 'woocommerce_after_shop_loop_item' ,  'after_shop_loop_item' ); 
+        add_action ( 'woocommerce_after_shop_loop_item' ,  'after_shop_loop_item' );
         
-        //--- end content-product.php
- 
+        //--- end content-product.php 
         add_action( 'woocommerce_after_shop_loop_item', 'remove_add_to_cart_buttons', 1 );
          
 
@@ -632,14 +630,14 @@ function initial(){
         remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 ); 
 
         //----- Build Infomation
-        add_action( 'woocommerce_custom_breadcrumb', 'woocommerce_breadcrumb', 10 ); 
-        add_action( 'woocommerce_before_main_content', 'woocommerce_before_product_details_tag');
-        //add_action( 'woocommerce_before_main_content', 'woocommerce_add_row_tag', 30 ); 
-
+        add_action( 'woocommerce_custom_breadcrumb', 'woocommerce_breadcrumb', 10 );
+       
+        add_action( 'woocommerce_before_main_content', 'woocommerce_before_product_details_tag');       
+        //  add_action( 'woocommerce_before_main_content', 'woocommerce_add_row_tag', 30 ); 
         add_action( 'woocommerce_related_product', 'woocommerce_before_product_details_tag' );       
+       
         add_action( 'woocommerce_upsale_product', 'woocommerce_upsell_display', 15 );
         add_action( 'woocommerce_related_product', 'woocommerce_output_related_products' ); 
-        
         
     }
 
@@ -648,7 +646,7 @@ add_action( 'wp', 'initial');
 
 
 
-
+//------- View type product
 
 function list_items(){
     //--- remove default
@@ -911,7 +909,6 @@ function show_attribute_sidebar(  ){
     $sidebar .= '</div>';
     echo $sidebar;     
 }
-
 function price_progress_bar() {
     // Get the minimum and maximum prices of products
     global $wpdb;
@@ -973,6 +970,10 @@ function price_progress_bar() {
     }
 }
 
+/**
+ * ------------- products details
+ */
+
 function woocommerce_template_loop_product_title() {
     global $product;
     $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
@@ -982,7 +983,6 @@ function custom_enqueue_scripts() {
     wp_enqueue_script( 'custom-size-filter', get_template_directory_uri() . '/assets/js/custom-size-filter.js', array('jquery'), null, true );
     wp_enqueue_script( 'custom', get_template_directory_uri() . '/assets/js/custom.js', array('jquery'), null, true );
 } 
-
 function get_current_page_slug() {
     global $post;
     if (isset($post)) { 
@@ -1011,7 +1011,6 @@ function woocommerce_before_sidebar() {
 function woocommerce_after_sidebar() { 
     echo   '</div></aside>'; 
 }
-
 function before_shop_loop (){ 
     if ( is_shop() || is_product_category() || is_product_tag() ) { 
         if(isset($_GET['view'])){
@@ -1038,7 +1037,6 @@ function after_shop_loop (){
         }
     }
 }
-
 function before_shop_loop_item (){ 
     
     if ( is_shop() || is_product_category() || is_product_tag() ) { 
@@ -1082,7 +1080,6 @@ function before_shop_loop_item (){
     }
      
 }
-
 function after_shop_loop_item(){  
     if ( is_shop() || is_product_category() || is_product_tag() ) {  
         if(isset($_GET['view'])){
@@ -1102,7 +1099,6 @@ function after_shop_loop_item(){
          
     }
 }
-
 function add_before_figure(){
     echo '<figure class="product-media">';
 }
@@ -1197,6 +1193,88 @@ function add_breadcrumb_to_checkout_page() {
     if (function_exists('woocommerce_breadcrumb')) {
         woocommerce_breadcrumb();
     }
+}
+/**
+ * Checkout page format
+ */
+
+//add_filter('woocommerce_checkout_fields', 'custom_billing_fields');
+function custom_billing_fields($fields) {
+    // Chỉnh sửa từng field trong phần billing
+
+    
+    // First Name
+    $fields['billing']['billing_first_name']['before'] = '<div class="row"><div class="col-md-6">';
+    $fields['billing']['billing_first_name']['label'] = 'Your First Name';
+    $fields['billing']['billing_first_name']['placeholder'] = 'Enter First Name';
+    $fields['billing']['billing_first_name']['class'] = array('form-row-wide');
+    $fields['billing']['billing_first_name']['custom_attributes'] = array('custom-attr' => 'value');
+    $fields['billing']['billing_first_name']['after'] = '</div>';
+
+    // Last Name
+    $fields['billing']['billing_last_name']['before'] = '<div class="col-md-6">';
+    $fields['billing']['billing_last_name']['label'] = 'Your Last Name';
+    $fields['billing']['billing_last_name']['placeholder'] = 'Enter Last Name';
+    $fields['billing']['billing_last_name']['class'] = array('form-row-wide');
+    $fields['billing']['billing_last_name']['after'] = '</div></div>';
+
+    // Company
+    $fields['billing']['billing_company']['label'] = 'Your Company';
+    $fields['billing']['billing_company']['placeholder'] = 'Enter Company Name';
+    $fields['billing']['billing_company']['class'] = array('form-row-wide');
+
+    // Address 1
+    $fields['billing']['billing_address_1']['label'] = 'Street Address';
+    $fields['billing']['billing_address_1']['placeholder'] = 'Enter Street Address';
+    $fields['billing']['billing_address_1']['class'] = array('form-row-wide');
+
+    // Address 2
+    $fields['billing']['billing_address_2']['label'] = 'Apartment/Suite/Unit (optional)';
+    $fields['billing']['billing_address_2']['placeholder'] = 'Enter Additional Address';
+    $fields['billing']['billing_address_2']['class'] = array('form-row-wide');
+
+    // City
+    $fields['billing']['billing_city']['label'] = 'City';
+    $fields['billing']['billing_city']['placeholder'] = 'Enter City';
+    $fields['billing']['billing_city']['class'] = array('form-row-wide');
+
+    // Postcode
+    $fields['billing']['billing_postcode']['label'] = 'Postcode/ZIP';
+    $fields['billing']['billing_postcode']['placeholder'] = 'Enter Postcode';
+    $fields['billing']['billing_postcode']['class'] = array('form-row-wide');
+
+    // Country
+    $fields['billing']['billing_country']['label'] = 'Country';
+    $fields['billing']['billing_country']['class'] = array('form-row-wide');
+
+    // State
+    $fields['billing']['billing_state']['label'] = 'State/Province';
+    $fields['billing']['billing_state']['class'] = array('form-row-wide');
+
+    // Email
+    $fields['billing']['billing_email']['label'] = 'Email Address';
+    $fields['billing']['billing_email']['placeholder'] = 'Enter Email Address';
+    $fields['billing']['billing_email']['class'] = array('form-row-wide');
+
+    // Phone
+    $fields['billing']['billing_phone']['label'] = 'Phone Number';
+    $fields['billing']['billing_phone']['placeholder'] = 'Enter Phone Number';
+    $fields['billing']['billing_phone']['class'] = array('form-row-wide');
+
+    return $fields;
+}
+
+add_filter('woocommerce_checkout_fields', 'custom_checkout_fields');
+
+function custom_checkout_fields($fields) {
+    // Tạo cấu trúc HTML cho phần First Name và Last Name
+    $fields['billing']['billing_first_name']['before'] = '<div class="row"><div class="col-md-6">';
+    $fields['billing']['billing_first_name']['after'] = '</div>';
+    
+    $fields['billing']['billing_last_name']['before'] = '<div class="col-md-6">';
+    $fields['billing']['billing_last_name']['after'] = '</div></div>';
+
+    return $fields;
 }
 
 

@@ -33,17 +33,18 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	<div class="row">
 		<div class="col-lg-9">
 			<?php if ( $checkout->get_checkout_fields() ) : ?>
-
+ 
 				<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
 
-				<div   id="customer_details">
+				<div class="row" id="customer_details">
 					<div class="col-lg-9">
 						<?php do_action( 'woocommerce_checkout_billing' ); ?>
-					</div>
-
-					<div class="col-lg-3">
-						<?php do_action( 'woocommerce_checkout_shipping' ); ?>
-					</div>
+					</div> 
+					<aside class="col-lg-3">
+						<div class="summary">
+							<?php do_action( 'woocommerce_checkout_shipping' ); ?>
+						</div>
+					</aside>
 				</div>
 
 				<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>

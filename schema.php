@@ -15,6 +15,7 @@ return [
         ['name' => 'menu', 'title' => 'Menus'],
         ['name' => 'home', 'title' => 'Trang chủ'],
         ['name' => 'about-us', 'title' => 'Về chúng tôi'],
+        ['name' => 'chung', 'title' => 'chung'],
     ],
 
     'options' => [
@@ -26,6 +27,61 @@ return [
             'name' => 'site_name',
             'label' => 'Tên webiste',
             'default' => 'vBrand Theme One',
+        ],
+        [
+            'session' => 'general',
+            'type' => 'text',
+            'name' => 'site_email',
+            'label' => 'Email Liên hệ',
+            'default' => 'support@google.com',
+        ],
+        [
+            'session' => 'general',
+            'type' => 'list',
+            'layout_admin' => 'text',
+            'name' => 'site_phone',
+            'label' => 'Số điện thoại liên hệ', 
+            'max' => 10, 
+            'schema' => [
+                [
+                    'type' => 'text',
+                    'name' => 'site_phone_number',
+                    'label' => 'Số điện thoại',
+                    'default' => 'Ex: 0904.049.522',
+                ],
+                [
+                    'type' => 'text',
+                    'name' => 'site_phone_title',
+                    'label' => 'Tiêu đề',
+                    'default' => 'Ex: Phòng Kinh Doanh',
+                ],
+                [
+                    'type' => 'text',
+                    'name' => 'site_phone_alias',
+                    'label' => 'Diễn giải',
+                    'default' => 'Ex: Liên hệ 24/7 ',
+                ],
+
+            ],
+            'default' =>[
+                [
+                    
+                ]
+            ]
+        ],
+        [
+            'session' => 'general',
+            'type' => 'text',
+            'name' => 'site_link_facebook',
+            'label' => 'Link Fanpage',
+            'default' => 'Đường dân trang facebook',
+        ],
+        [
+            'session' => 'general',
+            'type' => 'text',
+            'name' => 'site_link_tictok',
+            'label' => 'link TicTok',
+            'default' => 'Đường dân trang TicTok',
         ],
 
         // SIDE LOGO
@@ -102,6 +158,48 @@ return [
             
             ],
         ],
+        
+        //SLIDER
+
+        [
+            'session'=>'home',
+            'type'=>'list',
+            'label' => 'Slider',
+            'name'=>'slider',
+            'max' => 10,
+            'schema'=>[
+                [
+                    'type' => 'image',
+                    'name' => 'anh',
+                    'label' => 'Tải ảnh',
+                    'default' => '',
+                ],
+                [
+                    'type' => 'text',
+                    'name' => 'slidertitle',
+                    'label' => 'Tieu de cho slide',
+                    'default' => '',
+                ],
+                [
+                    'type' => 'textarea',
+                    'name' => 'slideralias',
+                    'label' => 'Diễn giải ngắn',
+                    'default' => '',
+                ],
+            ],
+            'default'=>[
+                [
+                    'anh' => 'https://i1-vnexpress.vnecdn.net/2024/07/05/20240703T155611Z1080573106RC2R-8723-3443-1720151605.jpg?w=680&h=408&q=100&dpr=2&fit=crop&s=WoTgSfID0xPgRfxDjajYOQ',
+                    'slidertitle' => 'Slide thu 1',
+                    'slideralias' => 'Thong tin diên giai so 1', 
+                ],
+                [
+                    'anh' => 'https://i1-vnexpress.vnecdn.net/2024/07/05/20240703T155611Z1080573106RC2R-8723-3443-1720151605.jpg?w=680&h=408&q=100&dpr=2&fit=crop&s=WoTgSfID0xPgRfxDjajYOQ',
+                    'slidertitle' => 'Slide thu 2',
+                    'slideralias' => 'Thong tin diên giai so 2', 
+                ],
+            ],
+        ],
         // BANNER
         [
             'session' => 'home',
@@ -123,34 +221,6 @@ return [
             'name' => 'banner_description',
             'label' => 'Banner Description',
             'default' => 'Thiết kế nội thất hiện đại kết hợp sự tiện nghi và thẩm mỹ, tập trung vào sự đơn giản, linh hoạt và sử dụng tối đa ánh sáng tự nhiên. Vật liệu công nghệ cao như kính, thép không gỉ được ưa chuộng, tạo không gian mở rộng và hiện đại. Màu sắc trung tính kết hợp với điểm nhấn màu sắc táo bạo, đèn led và ánh sáng mềm mại tạo điểm nhấn và sự ấm áp cho không gian. Thiết kế này không chỉ tiện nghi mà còn thể hiện phong cách và cá nhân của gia chủ.',
-        ],
-        [
-            'session' => 'home',
-            'type' => 'text',
-            'name' => 'banner_main_button_link',
-            'label' => 'Banner Main Button Link',
-            'default' => '',
-        ],
-        [
-            'session' => 'home',
-            'type' => 'text',
-            'name' => 'banner_main_button_text',
-            'label' => 'Banner Main Button Text',
-            'default' => 'Xem ngay',
-        ],
-        [
-            'session' => 'home',
-            'type' => 'text',
-            'name' => 'banner_second_button_link',
-            'label' => 'Banner Second Button Link',
-            'default' => '',
-        ],
-        [
-            'session' => 'home',
-            'type' => 'text',
-            'name' => 'banner_second_button_text',
-            'label' => 'Banner Second Button Text',
-            'default' => 'Explore',
         ],
         
         // PRODUCTS MODULE
@@ -443,6 +513,52 @@ return [
             'name' => 'aboutus_content',
             'label' => 'About Us content',
             'default' => '<p>chúng tôi mang lại sự kết hợp hoàn hảo giữa thiết kế độc đáo và chất lượng xuất sắc. Chúng tôi tôn trọng nguyên liệu tự nhiên và sử dụng chúng để tạo ra những sản phẩm nội thất đẹp mắt và bền bỉ. </p>   ',
+        ],
+
+
+
+        [
+            'session' => 'chung',
+            'type' => 'select',
+            'name' => 'module_home_articles_number',
+            'label' => 'So luong bai viet',
+            'default' => 4,
+            'options' => [
+                ['value' => 2, 'text' => 2],
+                ['value' => 3, 'text' => 3],
+                ['value' => 4, 'text' => 4],
+            ],
+
+        ],
+
+        [
+            'session' => 'chung',
+            'type' => 'text',
+            'name' => 'module_home_articles_title',
+            'label' => 'TIeu de cho model bai viet ỏ trang chu',
+            'default' => 'Bai Viet Gan Day',
+        ],
+
+        [
+            'session' => 'chung',
+            'type' => 'textarea',
+            'name' => 'module_home_articles_déc',
+            'label' => 'dong mo ta cua module, de trong thi khong hien',
+            'default' => '',
+        ],
+
+        [
+            'session' => 'chung',
+            'type' => 'select',
+            'name' => 'module_home_articles_order',
+            'label' => 'Bai viet hien thi',
+            'default' => 'new',
+            'options' => [
+                ['value' => 'new', 'text' => 'Bai viet moi nhat'],
+                ['value' => 'read_count', 'text' => 'Bai viet xem nhieu'],
+                ['value' => 'old', 'text' => 'Bai cu nhat'],
+            ],
+
         ],
     ],
 ];

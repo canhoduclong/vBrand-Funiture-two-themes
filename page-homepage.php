@@ -7,7 +7,7 @@ $themeData = vbrand_load_theme_data();
 
 ?>
  
-  
+ 
 
 			<div class="intro-slider-container mb-4">
                 <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
@@ -20,20 +20,18 @@ $themeData = vbrand_load_theme_data();
                             }
                         }
                     }'>
-					
-					<div class="intro-slide" style="background-image: url(<?php echo $themeData->get('banner_image'); ?>">
+					<?php 
+				 
+					foreach($themeData->get('slider') as $slider):
+						 
+					?>
+					<div class="intro-slide" style="background-image: url(<?php echo $slider['anh']; ?>">
                         <div class="container intro-content">
-                            <h3 class="intro-subtitle text-primary"><?php echo $themeData->get('banner_title');?></h3>
-                            <h1 class="intro-title"><?php echo $themeData->get('banner_intro_title');?></h1>
-
-                            <a href="<?php echo $themeData->get('banner_main_button_link'); ?>" class="btn btn-outline-primary-2">
-                                <span><?php echo $themeData->get('banner_more');?></span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
+                            <h3 class="intro-subtitle text-primary"><?php echo $slider['slidertitle'];?></h3>
+                            <h1 class="intro-title"><?php echo $slider['slidertitle'];?></h1> 
                         </div><!-- End .intro-content -->
                     </div><!-- End .intro-slide -->
-
-					 
+					<?php endforeach?>
                     
 
                 </div><!-- End .intro-slider owl-carousel owl-simple -->

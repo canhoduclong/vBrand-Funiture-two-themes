@@ -10,17 +10,23 @@ jQuery(document).ready(function($) {
     // Chuyển đổi select attribute của WooCommerce thành các thẻ <a>
     $('form.variations_form').each(function() {
         var $form = $(this);
+
         var $selectColor = $form.find('select[name^="attribute_color"]');
         var $selectGender = $form.find('select[name^="attribute_gender"]');
+        
         var $colorContainer = $('<div class="color-links"></div>');
         var $genderContainer = $('<div class="gender-links"></div>');
         var $summaryContainer = $('<div class="summary-container"></div>');
 
         // Ẩn select inputs
-        $selectColor.hide();
-        $selectGender.hide();
+
+
+        //$selectColor.hide();
+       //$selectGender.hide();
 
         // Tạo các thẻ <a> với mã màu tương ứng cho Color
+
+        
         $selectColor.find('option').each(function() {
             var $option = $(this);
             if ($option.val() !== '') {
@@ -78,10 +84,11 @@ jQuery(document).ready(function($) {
                 $genderContainer.append($link);
             }
         });
-
+        
         $selectColor.after($colorContainer);
         $selectGender.after($genderContainer);
-        $form.append($summaryContainer);
+        // $form.append($summaryContainer);
+        
 
         // Đồng bộ thẻ <a> với select
         function updateSummary() {
@@ -96,6 +103,10 @@ jQuery(document).ready(function($) {
             $summaryContainer.html('Color: ' + colorValue + '<br>Gender: ' + genderValue + '<br>SKU: ' + sku + '<br>Price: ' + price);
         }
 
+
+        
+        
+        
         $colorContainer.on('click', 'a.color-link', function(event) {
             event.preventDefault();
             var $selectedLink = $(this);
@@ -119,7 +130,10 @@ jQuery(document).ready(function($) {
 
             updateSummary();
         });
+         
 
+        
+        
         // Đồng bộ khi form load
         var selectedColorVal = $selectColor.val();
         if (selectedColorVal) {
@@ -132,5 +146,7 @@ jQuery(document).ready(function($) {
         }
 
         updateSummary();
+
+        
     });
 });

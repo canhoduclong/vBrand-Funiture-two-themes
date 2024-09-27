@@ -30,8 +30,7 @@
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
         
         <!-- Plugins CSS File -->
-        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/bootstrap.min.css">
-  
+        <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/bootstrap.min.css">  
 
         <!-- Main CSS File -->
         <link rel="stylesheet" href="<?=get_template_directory_uri()?>/assets/css/style.css">
