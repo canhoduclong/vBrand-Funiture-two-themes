@@ -21,8 +21,8 @@ jQuery(document).ready(function($) {
         // Ẩn select inputs
 
 
-       $selectColor.hide();
-       $selectGender.hide();
+       //$selectColor.hide();
+       //$selectGender.hide();
 
         // Tạo các thẻ <a> với mã màu tương ứng cho Color
 
@@ -84,9 +84,11 @@ jQuery(document).ready(function($) {
                 $genderContainer.append($link);
             }
         });
-        
+       
+        /*
         $selectColor.after($colorContainer);
         $selectGender.after($genderContainer);
+       */
         // $form.append($summaryContainer);
         
 
