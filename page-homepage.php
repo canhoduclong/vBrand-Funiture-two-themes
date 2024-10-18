@@ -33,16 +33,10 @@ $themeData = vbrand_load_theme_data();
                     </div><!-- End .intro-slide -->
 					<?php endforeach?>
                     
-
                 </div><!-- End .intro-slider owl-carousel owl-simple -->
-
-
-
-				
 
                 <span class="slider-loader"></span><!-- End .slider-loader -->
             </div><!-- End .intro-slider-container -->
-
 
 			<div class="container"> 
 				<div class="products mb-3">
@@ -98,65 +92,46 @@ $themeData = vbrand_load_theme_data();
 									'post_type'      => 'product',
 									'posts_per_page' => $count,
 								);
-						} 
-						
-						$products = new WP_Query($args);
-
-
-						
-	if ( woocommerce_product_loop() ) {	
-		
-		/**
-		 * Hook: woocommerce_before_shop_loop.
-		 *
-		 * @hooked woocommerce_output_all_notices - 10
-		 * @hooked woocommerce_result_count - 20
-		 * @hooked woocommerce_catalog_ordering - 30
-		 */
-		do_action( 'woocommerce_before_shop_loop' );
-
-		woocommerce_product_loop_start();
-
-
-
-						if ($products->have_posts()){ 
-							$i=1;
-							while ($products->have_posts()){
-								$products->the_post(); 
-
-                                /**
-                                 * Hook: woocommerce_shop_loop.
-                                 */
-                                do_action( 'woocommerce_shop_loop' ); 
-
-                                wc_get_template_part( 'content', 'product' );
-								 
-								$i++;
-							}
 						}
-						wp_reset_postdata(); // Đặt lại truy vấn sản phẩm
-					
-		
-			woocommerce_product_loop_end();
+						$products = new WP_Query($args);
+						if ( woocommerce_product_loop() ) {							
+							/**
+							 * Hook: woocommerce_before_shop_loop.
+							 *
+							 * @hooked woocommerce_output_all_notices - 10
+							 * @hooked woocommerce_result_count - 20
+							 * @hooked woocommerce_catalog_ordering - 30
+							 */
+							do_action( 'woocommerce_before_shop_loop' );
+							woocommerce_product_loop_start();
+							if ($products->have_posts()){ 
+								$i=1;
+								while ($products->have_posts()){
+									$products->the_post(); 
 
-			/**
-			 * Hook: woocommerce_after_shop_loop.
-			 *
-			 * @hooked woocommerce_pagination - 10
-			 */
-			do_action( 'woocommerce_after_shop_loop' );
+									/**
+									 * Hook: woocommerce_shop_loop.
+									 */
+									do_action( 'woocommerce_shop_loop' ); 
 
-					}
-
-					?> 
-
-					<?php }?>
-                    
+									wc_get_template_part( 'content', 'product' );
+									
+									$i++;
+								}
+							}
+							wp_reset_postdata(); // Đặt lại truy vấn sản phẩm 
+							woocommerce_product_loop_end();
+							/**
+							 * Hook: woocommerce_after_shop_loop.
+							 *
+							 * @hooked woocommerce_pagination - 10
+							 */
+							do_action( 'woocommerce_after_shop_loop' );
+						}
+					}?> 
                     </div>
 				</div>					
-			</div>
- 
-			   
+			</div> 
 
 <?php
 	get_footer();
